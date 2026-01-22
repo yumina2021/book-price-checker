@@ -1,9 +1,11 @@
 import streamlit as st
 from playwright.sync_api import sync_playwright
+import subprocess
 from bs4 import BeautifulSoup
 import time
 import random
 import re
+
 
 # Page config
 st.set_page_config(
@@ -11,6 +13,16 @@ st.set_page_config(
     page_icon="📚",
     layout="wide"
 )
+
+# Ensure Playwright browsers are installed
+@st.cache_resource
+def install_playwright_browser():
+    subprocess.run(["playwright", "install", "chromium"], check=True)
+
+try:
+    install_playwright_browser()
+except Exception as e:
+    st.error(f"Browser installation failed: {e}")
 
 # Title
 st.title("📚 Book Price Checker")
